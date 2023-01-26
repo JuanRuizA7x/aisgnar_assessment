@@ -1,7 +1,7 @@
-package com.pragma.scheduleassesment.controller;
+package com.pragma.scheduleassessment.controller;
 
-import com.pragma.scheduleassesment.dto.SchedulingRequestDTO;
-import com.pragma.scheduleassesment.service.ChapterCalendarService;
+import com.pragma.scheduleassessment.dto.SchedulingRequestDTO;
+import com.pragma.scheduleassessment.service.ChapterCalendarService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;

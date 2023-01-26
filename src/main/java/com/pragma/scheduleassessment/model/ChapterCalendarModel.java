@@ -1,4 +1,4 @@
-package com.pragma.scheduleassesment.model;
+package com.pragma.scheduleassessment.model;
 
 
 import lombok.AllArgsConstructor;

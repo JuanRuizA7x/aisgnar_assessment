@@ -1,9 +1,9 @@
-package com.pragma.scheduleassesment.service;
+package com.pragma.scheduleassessment.service;
 
-import com.pragma.scheduleassesment.dto.SchedulingRequestDTO;
-import com.pragma.scheduleassesment.dto.SchedulingResponseDTO;
-import com.pragma.scheduleassesment.model.ChapterCalendarModel;
-import com.pragma.scheduleassesment.repository.IChapterCalendarRepository;
+import com.pragma.scheduleassessment.dto.SchedulingRequestDTO;
+import com.pragma.scheduleassessment.dto.SchedulingResponseDTO;
+import com.pragma.scheduleassessment.model.ChapterCalendarModel;
+import com.pragma.scheduleassessment.repository.IChapterCalendarRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

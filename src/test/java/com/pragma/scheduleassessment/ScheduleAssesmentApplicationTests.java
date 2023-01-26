@@ -1,4 +1,4 @@
-package com.pragma.scheduleassesment;
+package com.pragma.scheduleassessment;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
