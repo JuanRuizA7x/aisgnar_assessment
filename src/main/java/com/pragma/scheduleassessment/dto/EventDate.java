@@ -5,18 +5,15 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
+import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class SchedulingResponseDTO {
+public class EventDate {
 
-    private String id;
-    private String summary;
-    private EventDate start;
-    private EventDate end;
-    private List<Attendee> attendees;
+    private String dateTime;
+    private String timeZone;
 
 }

@@ -1,12 +1,12 @@
 package com.pragma.scheduleassessment.dto;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
-@Getter
-@Setter
+@Data
 public class SchedulingRequestDTO {
+
     private Integer chapterId;
     private String specialty;
     private String email;
+
 }

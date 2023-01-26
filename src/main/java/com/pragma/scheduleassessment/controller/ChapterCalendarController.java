@@ -22,7 +22,7 @@ public class ChapterCalendarController {
 
     @PostMapping
     public ResponseEntity<?> scheduleEvent(@RequestBody SchedulingRequestDTO schedulingRequest) {
-        return new ResponseEntity<Event>(this.chapterCalendarService.scheduleAssessment(schedulingRequest), HttpStatus.OK);
+        return new ResponseEntity<>(chapterCalendarService.scheduleAssessment(schedulingRequest), HttpStatus.OK);
     }
 
 }
