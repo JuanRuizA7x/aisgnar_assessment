@@ -19,6 +19,6 @@ public class ChapterCalendarService {
 
     public SchedulingResponseDTO scheduleAssessment(SchedulingRequestDTO schedulingRequest) {
         ChapterCalendarModel dataCalendar = chapterCalendarRepository.findByChapterIdAndSpecialty(schedulingRequest.getChapterId(), schedulingRequest.getSpecialty()).orElseThrow(ChapterAndSpecialtyNotFoundException::new);
-
+        return null;
     }
 }
