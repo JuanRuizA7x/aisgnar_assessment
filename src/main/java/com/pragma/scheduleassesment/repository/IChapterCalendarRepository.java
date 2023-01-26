@@ -1,6 +1,6 @@
-package com.pragma.lambda.repository;
+package com.pragma.scheduleassesment.repository;
 
-import com.pragma.lambda.model.ChapterCalendarModel;
+import com.pragma.scheduleassesment.model.ChapterCalendarModel;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

@@ -1,4 +1,4 @@
-package com.pragma.lambda.repository;
+package com.pragma.scheduleassesment.repository;
 
 public interface IConsultAllEvents {
 }

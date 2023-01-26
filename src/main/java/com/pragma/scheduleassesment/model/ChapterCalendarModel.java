@@ -1,4 +1,4 @@
-package com.pragma.lambda.model;
+package com.pragma.scheduleassesment.model;
 
 
 import lombok.AllArgsConstructor;
