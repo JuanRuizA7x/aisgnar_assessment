@@ -1,13 +1,13 @@
-package com.pragma.lambda;
+package com.pragma.scheduleassesment;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class AsignarAssessmentApplication {
+public class ScheduleAssesmentApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(AsignarAssessmentApplication.class, args);
+		SpringApplication.run(ScheduleAssesmentApplication.class, args);
 	}
 
 }
