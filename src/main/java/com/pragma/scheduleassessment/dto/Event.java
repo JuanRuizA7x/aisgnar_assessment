@@ -12,7 +12,5 @@ import java.util.List;
 @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Event {
-
     private List<Item> items;
-
 }

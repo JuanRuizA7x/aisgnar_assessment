@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -28,23 +29,17 @@ public class ChapterCalendarService {
         String summaryUpdateEvent = "Assessment";
         LocalDateTime initDate = LocalDateTime.now();
         Integer numEvents = 1;
-
-        Attendee attendee = new Attendee(schedulingRequest.getEmail());
-        List<Attendee> attendees = null;
+        List<String> email = new ArrayList<>();
 
         ChapterCalendarModel dataCalendar = chapterCalendarRepository.findByChapterIdAndSpecialty(schedulingRequest.getChapterId(), schedulingRequest.getSpecialty()).orElseThrow(ChapterAndSpecialtyNotFoundException::new);
-
         Event event = consultEventClient.getAvailableEvent(typeGetEvent, dataCalendar.getCalendarId(), summaryGetEvent, initDate, numEvents).getBody();
 
-        attendees = event.getItems().get(0).getAttendees();
-        attendees.add(attendee);
+        assert event != null;
+        email.add(event.getItems().get(0).getAttendees().toString());
+        email.add(schedulingRequest.getEmail());
 
-        Item dataUpdatedEvent = new Item();
-        dataUpdatedEvent.setId(event.getItems().get(0).getId());
-        dataUpdatedEvent.setSummary(summaryUpdateEvent);
-        dataUpdatedEvent.setAttendees(attendees);
 
-        return updateEventClient.updateEvent(typeUpdateEvent, dataCalendar.getCalendarId(), event.getItems().get(0).getId(), dataUpdatedEvent).getBody();
+        return updateEventClient.updateEvent(typeUpdateEvent, dataCalendar.getCalendarId(), event.getItems().get(0).getId(),summaryUpdateEvent, email).getBody();
 
     }
 

@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 public interface IConsultEventClient {
 
     @GetMapping()
-    public ResponseEntity<Event> getAvailableEvent(
+    ResponseEntity<Event> getAvailableEvent(
             @RequestParam String type,
             @RequestParam String calendarId,
             @RequestParam String summary,
