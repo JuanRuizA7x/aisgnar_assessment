@@ -15,8 +15,6 @@ public class SchedulingResponseDTO {
 
     private String id;
     private String summary;
-    private EventDate start;
-    private EventDate end;
-    private List<Attendee> attendees;
+    private EventDate originalStartTime;
 
 }

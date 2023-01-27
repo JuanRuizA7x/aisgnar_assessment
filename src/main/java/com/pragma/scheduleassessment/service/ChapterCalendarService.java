@@ -29,18 +29,11 @@ public class ChapterCalendarService {
         String summaryUpdateEvent = "Assessment";
         LocalDateTime initDate = LocalDateTime.now();
         Integer numEvents = 1;
-        List<String> email = new ArrayList<>();
 
         ChapterCalendarModel dataCalendar = chapterCalendarRepository.findByChapterIdAndSpecialty(schedulingRequest.getChapterId(), schedulingRequest.getSpecialty()).orElseThrow(ChapterAndSpecialtyNotFoundException::new);
         Event event = consultEventClient.getAvailableEvent(typeGetEvent, dataCalendar.getCalendarId(), summaryGetEvent, initDate, numEvents).getBody();
-
-        assert event != null;
-        email.add(event.getItems().get(0).getAttendees().toString());
-        email.add(schedulingRequest.getEmail());
-
-
+        String email = schedulingRequest.getEmail();
         return updateEventClient.updateEvent(typeUpdateEvent, dataCalendar.getCalendarId(), event.getItems().get(0).getId(),summaryUpdateEvent, email).getBody();
-
     }
 
 }

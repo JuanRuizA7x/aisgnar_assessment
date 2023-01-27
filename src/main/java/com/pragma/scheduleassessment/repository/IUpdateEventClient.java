@@ -18,7 +18,7 @@ public interface IUpdateEventClient {
             @RequestParam String calendarId,
             @RequestParam String eventId,
             @RequestParam String summary,
-            @RequestParam List<String> email
+            @RequestParam String email
     );
 
 }
