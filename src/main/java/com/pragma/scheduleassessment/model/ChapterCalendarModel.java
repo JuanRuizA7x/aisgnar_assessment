@@ -23,5 +23,8 @@ public class ChapterCalendarModel {
     private String specialty;
     @Column(name = "calendar_id")
     private String calendarId;
-
+    @Column(name = "name_event_initial")
+    private String nameEventInitial;
+    @Column(name = "name_event_final")
+    private String nameEventFinal;
 }
