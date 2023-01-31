@@ -35,7 +35,14 @@ public class ChapterCalendarService {
         int countEmailsRegistered;
         ChapterCalendarModel dataCalendar = chapterCalendarRepository.findByChapterIdAndSpecialty(schedulingRequest.getChapterId(), schedulingRequest.getSpecialty()).orElseThrow(ChapterAndSpecialtyNotFoundException::new);
         summaryGetEvent = dataCalendar.getNameEventInitial();
-        Event event = consultEventClient.getAvailableEvent(typeGetEvent, dataCalendar.getCalendarId(), summaryGetEvent, initDate, numEvents).getBody();
+        Event event = consultEventClient.
+                getAvailableEvent(
+                        typeGetEvent,
+                        dataCalendar.getCalendarId(),
+                        summaryGetEvent,
+                        initDate,
+                        numEvents).
+                getBody();
         if  (event == null){
             throw  new ConsultEventClientResponseNullException();
         }
@@ -47,9 +54,25 @@ public class ChapterCalendarService {
         for (int i = 0; i < countEmailsRegistered; i++) {
             emails.add(event.getItems().get(0).getAttendees().get(i).getEmail());
         }
-        emails.addAll(schedulingRequest.getEmails());
+        emails.add(schedulingRequest.getEmail());
         summaryUpdateEvent = dataCalendar.getNameEventFinal();
-        return updateEventClient.updateEvent(typeUpdateEvent, dataCalendar.getCalendarId(), event.getItems().get(0).getId(),summaryUpdateEvent, emails).getBody();
+        SchedulingResponseDTO responseClient = updateEventClient.
+                updateEvent(
+                        typeUpdateEvent,
+                        dataCalendar.getCalendarId(),
+                        event.getItems().get(0).getId(),
+                        summaryUpdateEvent,
+                        emails).
+                getBody();
+        countEmailsRegistered = responseClient.getAttendees().size();
+        for (int i = 0; i < countEmailsRegistered; i++) {
+            if (responseClient.getAttendees().get(i).getEmail().equals(schedulingRequest.getEmail())) {
+                responseClient.getAttendees().get(i).setRole("Pragmatico Evaluado");
+            } else {
+                responseClient.getAttendees().get(i).setRole("Evaluador");
+            }
+        }
+        return responseClient;
     }
 
 }

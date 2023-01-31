@@ -8,6 +8,6 @@ import java.util.Optional;
 @Repository
 public interface IChapterCalendarRepository extends JpaRepository<ChapterCalendarModel, Long> {
 
-    Optional<ChapterCalendarModel> findByChapterIdAndSpecialty(Integer chapterId, String specialty);
+    Optional<ChapterCalendarModel> findByChapterIdAndSpecialty(Long chapterId, String specialty);
 
 }

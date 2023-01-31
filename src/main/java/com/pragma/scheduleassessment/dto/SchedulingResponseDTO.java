@@ -7,14 +7,17 @@ import lombok.NoArgsConstructor;
 
 import java.util.List;
 
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class SchedulingResponseDTO {
 
-    private String id;
     private String summary;
+    private String description;
     private EventDate originalStartTime;
+    private List<AttendeToSend> attendees;
+
 
 }
