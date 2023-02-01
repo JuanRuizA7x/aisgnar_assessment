@@ -16,9 +16,9 @@ public class ChapterCalendarModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "chapter_calendar_id", unique = true, nullable = false)
-    private Integer chapterCalendarId;
+    private Long chapterCalendarId;
     @Column(name = "chapter_id")
-    private Integer chapterId;
+    private Long chapterId;
     @Column(name = "specialty")
     private String specialty;
     @Column(name = "calendar_id")

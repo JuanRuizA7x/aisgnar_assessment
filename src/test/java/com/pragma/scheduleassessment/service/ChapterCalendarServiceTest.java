@@ -1,9 +1,12 @@
 package com.pragma.scheduleassessment.service;
 
 import com.pragma.scheduleassessment.dto.Event;
+import com.pragma.scheduleassessment.dto.Item;
 import com.pragma.scheduleassessment.dto.SchedulingRequestDTO;
 import com.pragma.scheduleassessment.dto.SchedulingResponseDTO;
 import com.pragma.scheduleassessment.exception.ConsultEventClientResponseNullException;
+import com.pragma.scheduleassessment.exception.EventsNotFoundException;
+import com.pragma.scheduleassessment.exception.UpdateEventClientResponseNullException;
 import com.pragma.scheduleassessment.factory.FactoryChapterCalendarDataTest;
 import com.pragma.scheduleassessment.model.ChapterCalendarModel;
 import com.pragma.scheduleassessment.repository.IChapterCalendarRepository;
@@ -41,9 +44,12 @@ class ChapterCalendarServiceTest {
     private ResponseEntity<Event> eventResponseEntity;
     private ResponseEntity<SchedulingResponseDTO> responseSDEntity;
     private ChapterCalendarModel chapterCalendarModel;
-
+    private List<String> emails = new ArrayList<>();
     @BeforeEach
     void setUp() {
+        emails.add("oscar.alvaradoz@pragma.com.co");
+        emails.add("juan.ruiz@pragma.com.co");
+        emails.add("oscar.alvaradoz@pragma.com.co");
         chapterCalendarModel = FactoryChapterCalendarDataTest.getChapterCalendarModel();
         schedulingRequest = new SchedulingRequestDTO(1L,"Java","oscar.alvaradoz@pragma.com.co");
         SchedulingResponseDTO response = FactoryChapterCalendarDataTest.getSchedilingResponse();
@@ -55,10 +61,6 @@ class ChapterCalendarServiceTest {
 
     @Test
     void mustScheduleAssessmentInCalendar() {
-        List<String> emails = new ArrayList<>();
-        emails.add("oscar.alvaradoz@pragma.com.co");
-        emails.add("juan.ruiz@pragma.com.co");
-        emails.add("oscar.alvaradoz@pragma.com.co");
 
         when(chapterCalendarRepository.
                  findByChapterIdAndSpecialty(
@@ -104,7 +106,7 @@ class ChapterCalendarServiceTest {
     }
 
     @Test
-    void trowConsultEventClientResponseNullExceptionWhenConsultEventClientRespondNull(){
+    void throwConsultEventClientResponseNullExceptionWhenConsultEventClientRespondNull(){
         when(chapterCalendarRepository.
                 findByChapterIdAndSpecialty(
                         1L,
@@ -120,8 +122,56 @@ class ChapterCalendarServiceTest {
                         1
                 )).
                 thenReturn(null);
-
-        chapterCalendarService.scheduleAssessment(schedulingRequest);
         Assertions.assertThrows(ConsultEventClientResponseNullException.class,() -> chapterCalendarService.scheduleAssessment(schedulingRequest));
+    }
+
+    @Test
+    void throwEventsNotFoundExceptionWhenItemsInObjetEventIsEmpty(){
+        List<Item> items = new ArrayList<>();
+        eventResponseEntity.getBody().setItems(items);
+        when(chapterCalendarRepository.
+                findByChapterIdAndSpecialty(
+                        1L,
+                        "Java"
+                )).
+                thenReturn(Optional.ofNullable((chapterCalendarModel)));
+        when(consultEventClient.
+                getAvailableEvent(
+                        "listEvents",
+                        "c_f89a637bec855ab211038b04f696e02755f5533082467b5f94cf93710922b08a@group.calendar.google.com",
+                        "Sin Asignar",
+                        LocalDateTime.now().withSecond(0).withNano(0),
+                        1
+                )).
+                thenReturn(eventResponseEntity);
+        Assertions.assertThrows(EventsNotFoundException.class,() -> chapterCalendarService.scheduleAssessment(schedulingRequest));
+    }
+
+    @Test
+    void throwUpdateEventClientResponseNullExceptionWhenUpdateEventClientRespondNull(){
+        when(chapterCalendarRepository.
+                findByChapterIdAndSpecialty(
+                        1L,
+                        "Java"
+                )).
+                thenReturn(Optional.ofNullable((chapterCalendarModel)));
+        when(consultEventClient.
+                getAvailableEvent(
+                        "listEvents",
+                        "c_f89a637bec855ab211038b04f696e02755f5533082467b5f94cf93710922b08a@group.calendar.google.com",
+                        "Sin Asignar",
+                        LocalDateTime.now().withSecond(0).withNano(0),
+                        1
+                )).
+                thenReturn(eventResponseEntity);
+        when(updateEventClient.
+                updateEvent(
+                        "updateEvent",
+                        "c_f89a637bec855ab211038b04f696e02755f5533082467b5f94cf93710922b08a@group.calendar.google.com",
+                        "idEvent",
+                        "Assessment",
+                        emails
+                )).thenReturn(null);
+        Assertions.assertThrows(UpdateEventClientResponseNullException.class,() -> chapterCalendarService.scheduleAssessment(schedulingRequest));
     }
 }

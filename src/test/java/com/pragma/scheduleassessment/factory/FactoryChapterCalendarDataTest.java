@@ -10,8 +10,8 @@ public class FactoryChapterCalendarDataTest {
 
     public static ChapterCalendarModel getChapterCalendarModel() {
         ChapterCalendarModel chapterCalendarModel = new ChapterCalendarModel();
-        chapterCalendarModel.setChapterCalendarId(1);
-        chapterCalendarModel.setChapterId(1);
+        chapterCalendarModel.setChapterCalendarId(1L);
+        chapterCalendarModel.setChapterId(1L);
         chapterCalendarModel.setSpecialty("Java");
         chapterCalendarModel.setCalendarId("c_f89a637bec855ab211038b04f696e02755f5533082467b5f94cf93710922b08a@group.calendar.google.com");
         chapterCalendarModel.setNameEventInitial("Sin Asignar");

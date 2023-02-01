@@ -37,16 +37,15 @@ public class ChapterCalendarService {
         int countEmailsRegistered;
         ChapterCalendarModel dataCalendar = chapterCalendarRepository.findByChapterIdAndSpecialty(schedulingRequest.getChapterId(), schedulingRequest.getSpecialty()).orElseThrow(ChapterAndSpecialtyNotFoundException::new);
         summaryGetEvent = dataCalendar.getNameEventInitial();
-        ResponseEntity<Event> responseEvent = null;
-        responseEvent = consultEventClient.
+        ResponseEntity<Event> responseEvent = consultEventClient.
                 getAvailableEvent(
                         typeGetEvent,
                         dataCalendar.getCalendarId(),
                         summaryGetEvent,
                         initDate,
                         numEvents);
-        if (responseEvent == null){
-            throw  new ConsultEventClientResponseNullException();
+        if (responseEvent == null) {
+            throw new ConsultEventClientResponseNullException();
         }
         Event event = responseEvent.getBody();
         assert event != null;
@@ -60,17 +59,19 @@ public class ChapterCalendarService {
         }
         emails.add(schedulingRequest.getEmail());
         summaryUpdateEvent = dataCalendar.getNameEventFinal();
-        SchedulingResponseDTO responseClient = updateEventClient.
+        ResponseEntity<SchedulingResponseDTO> serviceClientResponse = updateEventClient.
                 updateEvent(
                         typeUpdateEvent,
                         dataCalendar.getCalendarId(),
                         event.getItems().get(0).getId(),
                         summaryUpdateEvent,
-                        emails).
-                getBody();
-        if (responseClient == null) {
+                        emails);
+        if (serviceClientResponse == null) {
             throw new UpdateEventClientResponseNullException();
         }
+
+        SchedulingResponseDTO responseClient = serviceClientResponse.getBody();
+        assert responseClient != null;
         if (responseClient.getAttendees() != null) {
             countEmailsRegistered = responseClient.getAttendees().size();
             for (int i = 0; i < countEmailsRegistered; i++) {
