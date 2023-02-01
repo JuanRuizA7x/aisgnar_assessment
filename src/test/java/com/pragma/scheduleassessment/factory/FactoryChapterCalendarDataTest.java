@@ -1,8 +1,6 @@
 package com.pragma.scheduleassessment.factory;
 
-import com.pragma.scheduleassessment.dto.Attendee;
-import com.pragma.scheduleassessment.dto.Event;
-import com.pragma.scheduleassessment.dto.Item;
+import com.pragma.scheduleassessment.dto.*;
 import com.pragma.scheduleassessment.model.ChapterCalendarModel;
 
 import java.util.ArrayList;
@@ -37,5 +35,27 @@ public class FactoryChapterCalendarDataTest {
         items.add(item);
         event.setItems(items);
         return event;
+    }
+
+    public static SchedulingResponseDTO getSchedilingResponse() {
+        List<AttendeToSend> emails = new ArrayList<>();
+        SchedulingResponseDTO response = new SchedulingResponseDTO();
+        EventDate eventDate = new EventDate();
+        AttendeToSend participant1 = new AttendeToSend();
+        AttendeToSend participant2 = new AttendeToSend();
+
+
+        eventDate.setDateTime("2023-01-04");
+        eventDate.setTimeZone("America/Bogota");
+        participant1.setEmail("oscar.alvaradoz@pragma.com.co");
+        participant2.setEmail("adan.gonzalez@pragma.com.co");
+        emails.add(participant1);
+        emails.add(participant2);
+
+        response.setSummary("Event Assement Update");
+        response.setDescription("Event Assement Update");
+        response.setOriginalStartTime(eventDate);
+        response.setAttendees(emails);
+        return response;
     }
 }

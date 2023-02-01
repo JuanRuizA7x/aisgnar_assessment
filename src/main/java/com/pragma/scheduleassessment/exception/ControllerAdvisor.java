@@ -25,4 +25,9 @@ public class ControllerAdvisor {
             public ResponseEntity<Map<String, String>> handleConsultEventClientResponseNull() {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Collections.singletonMap(ERROR_MESSAGE, ExceptionResponse.CONSULT_EVENT_CLIENT_RESPONSE_NULL.getMessage()));
         }
+
+        @ExceptionHandler(UpdateEventClientResponseNullException.class)
+            public ResponseEntity<Map<String, String>> handleUpdateEventClientResponseNull() {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Collections.singletonMap(ERROR_MESSAGE, ExceptionResponse.UPDATE_EVENT_CLIENT_RESPONSE_NULL.getMessage()));
+        }
 }

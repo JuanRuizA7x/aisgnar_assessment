@@ -2,6 +2,8 @@ package com.pragma.scheduleassessment.service;
 
 import com.pragma.scheduleassessment.dto.Event;
 import com.pragma.scheduleassessment.dto.SchedulingRequestDTO;
+import com.pragma.scheduleassessment.dto.SchedulingResponseDTO;
+import com.pragma.scheduleassessment.exception.ConsultEventClientResponseNullException;
 import com.pragma.scheduleassessment.factory.FactoryChapterCalendarDataTest;
 import com.pragma.scheduleassessment.model.ChapterCalendarModel;
 import com.pragma.scheduleassessment.repository.IChapterCalendarRepository;
@@ -14,15 +16,14 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.time.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.http.ResponseEntity;
 
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
+import org.junit.jupiter.api.Assertions;
 
 @ExtendWith(SpringExtension.class)
 class ChapterCalendarServiceTest {
@@ -35,33 +36,53 @@ class ChapterCalendarServiceTest {
     IConsultEventClient consultEventClient;
     @Mock
     IUpdateEventClient updateEventClient;
+
     private SchedulingRequestDTO schedulingRequest;
+    private ResponseEntity<Event> eventResponseEntity;
+    private ResponseEntity<SchedulingResponseDTO> responseSDEntity;
+    private ChapterCalendarModel chapterCalendarModel;
+
     @BeforeEach
     void setUp() {
+        chapterCalendarModel = FactoryChapterCalendarDataTest.getChapterCalendarModel();
         schedulingRequest = new SchedulingRequestDTO(1L,"Java","oscar.alvaradoz@pragma.com.co");
+        SchedulingResponseDTO response = FactoryChapterCalendarDataTest.getSchedilingResponse();
+        responseSDEntity = new ResponseEntity<>(response,null,200);
+        Event eventTest = FactoryChapterCalendarDataTest.getEvent();
+        eventResponseEntity = new ResponseEntity<>(eventTest, null, 200);
+
     }
 
     @Test
     void mustScheduleAssessmentInCalendar() {
-        ChapterCalendarModel chapterCalendarModel = FactoryChapterCalendarDataTest.getChapterCalendarModel();
-        Event event = FactoryChapterCalendarDataTest.getEvent();
-        ResponseEntity<Event> responseEntity = new ResponseEntity<>(event, null, 200);
+        List<String> emails = new ArrayList<>();
+        emails.add("oscar.alvaradoz@pragma.com.co");
+        emails.add("juan.ruiz@pragma.com.co");
+        emails.add("oscar.alvaradoz@pragma.com.co");
 
         when(chapterCalendarRepository.
                  findByChapterIdAndSpecialty(
                          1L,
                          "Java"
                  )).
-                 thenReturn(Optional.of(chapterCalendarModel));
+                 thenReturn(Optional.ofNullable((chapterCalendarModel)));
          when(consultEventClient.
                  getAvailableEvent(
                          "listEvents",
                          "c_f89a637bec855ab211038b04f696e02755f5533082467b5f94cf93710922b08a@group.calendar.google.com",
                          "Sin Asignar",
-                         LocalDateTime.now(),
+                         LocalDateTime.now().withSecond(0).withNano(0),
                          1
                  )).
-                 thenReturn(responseEntity);
+                 thenReturn(eventResponseEntity);
+         when(updateEventClient.
+                 updateEvent(
+                         "updateEvent",
+                         "c_f89a637bec855ab211038b04f696e02755f5533082467b5f94cf93710922b08a@group.calendar.google.com",
+                         "idEvent",
+                         "Assessment",
+                         emails
+                 )).thenReturn(responseSDEntity);
 
         chapterCalendarService.scheduleAssessment(schedulingRequest);
 
@@ -71,14 +92,36 @@ class ChapterCalendarServiceTest {
                         "listEvents",
                         "c_f89a637bec855ab211038b04f696e02755f5533082467b5f94cf93710922b08a@group.calendar.google.com",
                         "Sin Asignar",
-                        LocalDateTime.now(),
+                        LocalDateTime.now().withSecond(0).withNano(0),
                         1
                 );
         verify(updateEventClient).updateEvent("updateEvent",
                 "c_f89a637bec855ab211038b04f696e02755f5533082467b5f94cf93710922b08a@group.calendar.google.com",
                 "idEvent",
                 "Assessment",
-                List.of("oscar.alvaradoz@pragma.com.co","juan.ruiz@pragma.com.co")
+                emails
                 );
+    }
+
+    @Test
+    void trowConsultEventClientResponseNullExceptionWhenConsultEventClientRespondNull(){
+        when(chapterCalendarRepository.
+                findByChapterIdAndSpecialty(
+                        1L,
+                        "Java"
+                )).
+                thenReturn(Optional.ofNullable((chapterCalendarModel)));
+        when(consultEventClient.
+                getAvailableEvent(
+                        "listEvents",
+                        "c_f89a637bec855ab211038b04f696e02755f5533082467b5f94cf93710922b08a@group.calendar.google.com",
+                        "Sin Asignar",
+                        LocalDateTime.now().withSecond(0).withNano(0),
+                        1
+                )).
+                thenReturn(null);
+
+        chapterCalendarService.scheduleAssessment(schedulingRequest);
+        Assertions.assertThrows(ConsultEventClientResponseNullException.class,() -> chapterCalendarService.scheduleAssessment(schedulingRequest));
     }
 }
