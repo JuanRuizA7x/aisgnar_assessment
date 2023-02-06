@@ -1,7 +1,7 @@
 package com.pragma.scheduleassessment.controller;
 
-import com.pragma.scheduleassessment.dto.SchedulingRequestDTO;
-import com.pragma.scheduleassessment.dto.SchedulingResponseDTO;
+import com.pragma.scheduleassessment.dto.SchedulingRequest;
+import com.pragma.scheduleassessment.dto.SchedulingResponse;
 import com.pragma.scheduleassessment.service.ChapterCalendarService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -17,7 +17,7 @@ public class ChapterCalendarController {
     private final ChapterCalendarService chapterCalendarService;
 
     @PostMapping()
-    public ResponseEntity<SchedulingResponseDTO> scheduleEvent(@RequestBody SchedulingRequestDTO schedulingRequest) {
+    public ResponseEntity<SchedulingResponse> scheduleEvent(@RequestBody SchedulingRequest schedulingRequest) {
         return new ResponseEntity<>(chapterCalendarService.scheduleAssessment(schedulingRequest), HttpStatus.OK);
     }
 

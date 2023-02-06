@@ -2,8 +2,9 @@ package com.pragma.scheduleassessment.service;
 
 import com.pragma.scheduleassessment.dto.Event;
 import com.pragma.scheduleassessment.dto.Item;
-import com.pragma.scheduleassessment.dto.SchedulingRequestDTO;
-import com.pragma.scheduleassessment.dto.SchedulingResponseDTO;
+import com.pragma.scheduleassessment.dto.SchedulingRequest;
+import com.pragma.scheduleassessment.dto.SchedulingResponse;
+import com.pragma.scheduleassessment.exception.ChapterAndSpecialtyNotFoundException;
 import com.pragma.scheduleassessment.exception.ConsultEventClientResponseNullException;
 import com.pragma.scheduleassessment.exception.EventsNotFoundException;
 import com.pragma.scheduleassessment.exception.UpdateEventClientResponseNullException;
@@ -40,9 +41,9 @@ class ChapterCalendarServiceTest {
     @Mock
     IUpdateEventClient updateEventClient;
 
-    private SchedulingRequestDTO schedulingRequest;
+    private SchedulingRequest schedulingRequest;
     private ResponseEntity<Event> eventResponseEntity;
-    private ResponseEntity<SchedulingResponseDTO> responseSDEntity;
+    private ResponseEntity<SchedulingResponse> responseSDEntity;
     private ChapterCalendarModel chapterCalendarModel;
     private List<String> emails = new ArrayList<>();
     @BeforeEach
@@ -51,8 +52,8 @@ class ChapterCalendarServiceTest {
         emails.add("juan.ruiz@pragma.com.co");
         emails.add("oscar.alvaradoz@pragma.com.co");
         chapterCalendarModel = FactoryChapterCalendarDataTest.getChapterCalendarModel();
-        schedulingRequest = new SchedulingRequestDTO(1L,"Java","oscar.alvaradoz@pragma.com.co");
-        SchedulingResponseDTO response = FactoryChapterCalendarDataTest.getSchedilingResponse();
+        schedulingRequest = new SchedulingRequest(1L,"Java","oscar.alvaradoz@pragma.com.co");
+        SchedulingResponse response = FactoryChapterCalendarDataTest.getSchedilingResponse();
         responseSDEntity = new ResponseEntity<>(response,null,200);
         Event eventTest = FactoryChapterCalendarDataTest.getEvent();
         eventResponseEntity = new ResponseEntity<>(eventTest, null, 200);
@@ -61,7 +62,7 @@ class ChapterCalendarServiceTest {
 
     @Test
     void mustScheduleAssessmentInCalendar() {
-
+        String summary = chapterCalendarModel.getNameEventFinal() + " - "+ schedulingRequest.getEmail();
         when(chapterCalendarRepository.
                  findByChapterIdAndSpecialty(
                          1L,
@@ -82,7 +83,7 @@ class ChapterCalendarServiceTest {
                          "updateEvent",
                          "c_f89a637bec855ab211038b04f696e02755f5533082467b5f94cf93710922b08a@group.calendar.google.com",
                          "idEvent",
-                         "Assessment",
+                         summary,
                          emails
                  )).thenReturn(responseSDEntity);
 
@@ -100,11 +101,21 @@ class ChapterCalendarServiceTest {
         verify(updateEventClient).updateEvent("updateEvent",
                 "c_f89a637bec855ab211038b04f696e02755f5533082467b5f94cf93710922b08a@group.calendar.google.com",
                 "idEvent",
-                "Assessment",
+                summary,
                 emails
                 );
     }
 
+    @Test
+    void throwChapterAndSpecialtyNotFoundExceptionWhenNotFoundDataInDb(){
+        when(chapterCalendarRepository.
+                findByChapterIdAndSpecialty(
+                        1L,
+                        "Java"
+                )).
+                thenReturn(Optional.empty());
+        Assertions.assertThrows(ChapterAndSpecialtyNotFoundException.class,() -> chapterCalendarService.scheduleAssessment(schedulingRequest));
+    }
     @Test
     void throwConsultEventClientResponseNullExceptionWhenConsultEventClientRespondNull(){
         when(chapterCalendarRepository.

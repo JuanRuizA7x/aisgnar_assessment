@@ -24,7 +24,7 @@ public class ChapterCalendarService {
     private final IConsultEventClient consultEventClient;
     private final IUpdateEventClient updateEventClient;
 
-    public SchedulingResponseDTO scheduleAssessment(SchedulingRequestDTO schedulingRequest) {
+    public SchedulingResponse scheduleAssessment(SchedulingRequest schedulingRequest) {
 
         String typeGetEvent = "listEvents";
         String typeUpdateEvent = "updateEvent";
@@ -58,8 +58,9 @@ public class ChapterCalendarService {
             emails.add(event.getItems().get(0).getAttendees().get(i).getEmail());
         }
         emails.add(schedulingRequest.getEmail());
-        summaryUpdateEvent = dataCalendar.getNameEventFinal();
-        ResponseEntity<SchedulingResponseDTO> serviceClientResponse = updateEventClient.
+        summaryUpdateEvent = dataCalendar.getNameEventFinal() +" - " + schedulingRequest.getEmail();
+        //summaryUpdateEvent = dataCalendar.getNameEventFinal();
+        ResponseEntity<SchedulingResponse> serviceClientResponse = updateEventClient.
                 updateEvent(
                         typeUpdateEvent,
                         dataCalendar.getCalendarId(),
@@ -70,7 +71,7 @@ public class ChapterCalendarService {
             throw new UpdateEventClientResponseNullException();
         }
 
-        SchedulingResponseDTO responseClient = serviceClientResponse.getBody();
+        SchedulingResponse responseClient = serviceClientResponse.getBody();
         assert responseClient != null;
         if (responseClient.getAttendees() != null) {
             countEmailsRegistered = responseClient.getAttendees().size();

@@ -1,6 +1,6 @@
 package com.pragma.scheduleassessment.repository;
 
-import com.pragma.scheduleassessment.dto.SchedulingResponseDTO;
+import com.pragma.scheduleassessment.dto.SchedulingResponse;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,7 +13,7 @@ import java.util.List;
 public interface IUpdateEventClient {
 
     @GetMapping()
-    ResponseEntity<SchedulingResponseDTO> updateEvent(
+    ResponseEntity<SchedulingResponse> updateEvent(
             @RequestParam String type,
             @RequestParam String calendarId,
             @RequestParam String eventId,

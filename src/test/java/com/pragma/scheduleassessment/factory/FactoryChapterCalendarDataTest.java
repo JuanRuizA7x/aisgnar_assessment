@@ -37,9 +37,9 @@ public class FactoryChapterCalendarDataTest {
         return event;
     }
 
-    public static SchedulingResponseDTO getSchedilingResponse() {
+    public static SchedulingResponse getSchedilingResponse() {
         List<AttendeToSend> emails = new ArrayList<>();
-        SchedulingResponseDTO response = new SchedulingResponseDTO();
+        SchedulingResponse response = new SchedulingResponse();
         EventDate eventDate = new EventDate();
         AttendeToSend participant1 = new AttendeToSend();
         AttendeToSend participant2 = new AttendeToSend();

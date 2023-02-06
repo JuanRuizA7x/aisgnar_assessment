@@ -12,7 +12,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class SchedulingResponseDTO {
+public class SchedulingResponse {
 
     private String summary;
     private String description;

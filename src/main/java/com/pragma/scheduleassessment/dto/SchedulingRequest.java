@@ -3,11 +3,9 @@ package com.pragma.scheduleassessment.dto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
-import java.util.List;
-
 @Data
 @AllArgsConstructor
-public class SchedulingRequestDTO {
+public class SchedulingRequest {
 
     private Long chapterId;
     private String specialty;
