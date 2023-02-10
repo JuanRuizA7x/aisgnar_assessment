@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDateTime;
 
-@FeignClient(name = "get-available-event", url = "https://script.google.com/macros/s/AKfycbzBB8QzbFtLcRvIzO7qA-ntiS9hHXMvW8e3NLzVOpGuJQjmRTnnkzzZQYr7Wemk_xWV/exec")
+@FeignClient(name = "get-available-event", url = "${CLIENTE_FEING_CONSULTA}")
 public interface IConsultEventClient {
 
     @GetMapping()

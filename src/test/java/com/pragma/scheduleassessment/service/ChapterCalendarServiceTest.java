@@ -26,7 +26,8 @@ import java.util.List;
 import java.util.Optional;
 import org.springframework.http.ResponseEntity;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.verify;
 import org.junit.jupiter.api.Assertions;
 
 @ExtendWith(SpringExtension.class)

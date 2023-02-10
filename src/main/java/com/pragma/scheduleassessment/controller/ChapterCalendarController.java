@@ -11,7 +11,9 @@ import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/scheduleEvent")
+@RequestMapping("/")
+@CrossOrigin(origins = "*", methods= {RequestMethod.GET,RequestMethod.POST,RequestMethod.PUT,RequestMethod.DELETE})
+
 public class ChapterCalendarController {
 
     private final ChapterCalendarService chapterCalendarService;

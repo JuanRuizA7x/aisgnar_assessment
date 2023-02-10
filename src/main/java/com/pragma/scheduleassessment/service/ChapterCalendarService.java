@@ -18,6 +18,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @Service
+
 public class ChapterCalendarService {
 
     private final IChapterCalendarRepository chapterCalendarRepository;
@@ -59,7 +60,7 @@ public class ChapterCalendarService {
         }
         emails.add(schedulingRequest.getEmail());
         summaryUpdateEvent = dataCalendar.getNameEventFinal() +" - " + schedulingRequest.getEmail();
-        //summaryUpdateEvent = dataCalendar.getNameEventFinal();
+
         ResponseEntity<SchedulingResponse> serviceClientResponse = updateEventClient.
                 updateEvent(
                         typeUpdateEvent,
