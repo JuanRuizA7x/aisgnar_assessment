@@ -72,6 +72,7 @@ class ChapterCalendarServiceTest {
                  thenReturn(Optional.ofNullable((chapterCalendarModel)));
          when(consultEventClient.
                  getAvailableEvent(
+                         "calendar",
                          "listEvents",
                          "c_f89a637bec855ab211038b04f696e02755f5533082467b5f94cf93710922b08a@group.calendar.google.com",
                          "Sin Asignar",
@@ -81,6 +82,7 @@ class ChapterCalendarServiceTest {
                  thenReturn(eventResponseEntity);
          when(updateEventClient.
                  updateEvent(
+                         "calendar",
                          "updateEvent",
                          "c_f89a637bec855ab211038b04f696e02755f5533082467b5f94cf93710922b08a@group.calendar.google.com",
                          "idEvent",
@@ -93,13 +95,16 @@ class ChapterCalendarServiceTest {
         verify(chapterCalendarRepository).findByChapterIdAndSpecialty(1L,"Java");
         verify(consultEventClient).
                 getAvailableEvent(
+                        "calendar",
                         "listEvents",
                         "c_f89a637bec855ab211038b04f696e02755f5533082467b5f94cf93710922b08a@group.calendar.google.com",
                         "Sin Asignar",
                         LocalDateTime.now().withSecond(0).withNano(0),
                         1
                 );
-        verify(updateEventClient).updateEvent("updateEvent",
+        verify(updateEventClient).updateEvent(
+                "calendar",
+                "updateEvent",
                 "c_f89a637bec855ab211038b04f696e02755f5533082467b5f94cf93710922b08a@group.calendar.google.com",
                 "idEvent",
                 summary,
@@ -127,6 +132,7 @@ class ChapterCalendarServiceTest {
                 thenReturn(Optional.ofNullable((chapterCalendarModel)));
         when(consultEventClient.
                 getAvailableEvent(
+                        "calendar",
                         "listEvents",
                         "c_f89a637bec855ab211038b04f696e02755f5533082467b5f94cf93710922b08a@group.calendar.google.com",
                         "Sin Asignar",
@@ -149,6 +155,7 @@ class ChapterCalendarServiceTest {
                 thenReturn(Optional.ofNullable((chapterCalendarModel)));
         when(consultEventClient.
                 getAvailableEvent(
+                        "calendar",
                         "listEvents",
                         "c_f89a637bec855ab211038b04f696e02755f5533082467b5f94cf93710922b08a@group.calendar.google.com",
                         "Sin Asignar",
@@ -169,6 +176,7 @@ class ChapterCalendarServiceTest {
                 thenReturn(Optional.ofNullable((chapterCalendarModel)));
         when(consultEventClient.
                 getAvailableEvent(
+                        "calendar",
                         "listEvents",
                         "c_f89a637bec855ab211038b04f696e02755f5533082467b5f94cf93710922b08a@group.calendar.google.com",
                         "Sin Asignar",
@@ -178,6 +186,7 @@ class ChapterCalendarServiceTest {
                 thenReturn(eventResponseEntity);
         when(updateEventClient.
                 updateEvent(
+                        "calendar",
                         "updateEvent",
                         "c_f89a637bec855ab211038b04f696e02755f5533082467b5f94cf93710922b08a@group.calendar.google.com",
                         "idEvent",

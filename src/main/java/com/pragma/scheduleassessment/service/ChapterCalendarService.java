@@ -27,6 +27,7 @@ public class ChapterCalendarService {
 
     public SchedulingResponse scheduleAssessment(SchedulingRequest schedulingRequest) {
 
+        String api = "calendar";
         String typeGetEvent = "listEvents";
         String typeUpdateEvent = "updateEvent";
         String summaryGetEvent;
@@ -40,6 +41,7 @@ public class ChapterCalendarService {
         summaryGetEvent = dataCalendar.getNameEventInitial();
         ResponseEntity<Event> responseEvent = consultEventClient.
                 getAvailableEvent(
+                        api,
                         typeGetEvent,
                         dataCalendar.getCalendarId(),
                         summaryGetEvent,
@@ -63,6 +65,7 @@ public class ChapterCalendarService {
 
         ResponseEntity<SchedulingResponse> serviceClientResponse = updateEventClient.
                 updateEvent(
+                        api,
                         typeUpdateEvent,
                         dataCalendar.getCalendarId(),
                         event.getItems().get(0).getId(),

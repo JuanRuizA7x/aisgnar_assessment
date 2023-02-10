@@ -8,12 +8,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
-@FeignClient(name = "update-event", url = "${CLIENTE_FEING_ACTUALIZACION}")
+@FeignClient(name = "update-event", url = "${CLIENTE_FEING}")
 
 public interface IUpdateEventClient {
 
     @GetMapping()
     ResponseEntity<SchedulingResponse> updateEvent(
+            @RequestParam String api,
             @RequestParam String type,
             @RequestParam String calendarId,
             @RequestParam String eventId,

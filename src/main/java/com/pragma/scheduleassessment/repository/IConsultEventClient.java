@@ -9,11 +9,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDateTime;
 
-@FeignClient(name = "get-available-event", url = "${CLIENTE_FEING_CONSULTA}")
+@FeignClient(name = "get-available-event", url = "${CLIENTE_FEING}")
 public interface IConsultEventClient {
 
     @GetMapping()
     ResponseEntity<Event> getAvailableEvent(
+            @RequestParam String api,
             @RequestParam String type,
             @RequestParam String calendarId,
             @RequestParam String summary,
